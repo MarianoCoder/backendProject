@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Agregar Productos</title>
+</head>
+<body>
+    
+    
+    <h2>Ingrese Nuevo Producto</h2>
+    <form action="./api/products/save" method="POST"> 
+        Nombre: <input type="text" name="title">
+        Descripción: <input type="text" name="description">
+        Código: <input type="number" name="code">
+        Precio: <input type="number" name="price">
+        Stock: <input type="number" name="stock">
+        Categoría: <input type="text" name="category">
+        Foto URL: <input type="file" name="thumbnail">
+        <button>Enviar</button>
+    </form>
+
+</body>
+</html>
