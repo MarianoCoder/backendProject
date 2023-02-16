@@ -24,8 +24,8 @@ routerProducts.get("/products/list", (req, res) => {
 });
 
 routerProducts.get("/products/list/:pid", (req, res) => {
-  let { id } = req.params;
-  res.json(products.listId(id));
+  let { pid } = req.params;
+  res.json(products.listId(pid));
 });
 
 routerProducts.post("/products/save", (req, res) => {
@@ -35,15 +35,15 @@ routerProducts.post("/products/save", (req, res) => {
 });
 
 routerProducts.put("/products/refresh/:pid", (req, res) => {
-  let { id } = req.params;
+  let { pid } = req.params;
   let product = req.body;
-  products.refresh(product, id);
+  products.refresh(product, pid);
   res.json(product);
 });
 
 routerProducts.delete("/products/delete/:pid", (req, res) => {
-  let { id } = req.params;
-  let product = products.delete(id);
+  let { pid } = req.params;
+  let product = products.delete(pid);
   res.json(product);
 });
 
