@@ -1,18 +1,28 @@
 import express from "express";
 import Products from "./api/products.js";
 import Carts from "./api/carts.js";
+//import http from "http";
+//import {Server} from "socket.io";
+//import {create} from "express-handlebars"
 
 let products = new Products();
 let carts = new Carts();
 
 const app = express();
 app.use(express.static("public"));
+//const server = http.createServer(app);
+//const io = new Server(server);
+//const hbs = create({ defaultLayout: 'index', extname: '.hbs',});
 
 const routerProducts = express.Router();
 const routerCarts = express.Router();
 
 app.use("/api", routerProducts);
 app.use("/api", routerCarts);
+
+//app.engine("handlebars", hbs.engine)
+//app.set("view engine","handlebars")
+//app.set("views", "./views")
 
 routerProducts.use(express.json());
 routerProducts.use(express.urlencoded({ extended: true }));
@@ -58,9 +68,22 @@ routerCarts.get("/carts/:cid", (req, res) => {
   res.json(carts.listCid(cid));
 });
 
+
+/*
+io.on("conection", (socket)=>{
+  console.log("Usuario conectado")
+
+  socket.on("mensaje", (mensaje)=>{
+      io.emit("mensaje", mensaje)
+  })
+
+  socket.on("disconect", ()=>{
+      console.log("Usuario desconectado")
+  })
+})*/
+
 const PORT = 8080;
 const server = app.listen(PORT, () => {
-  console.log(`Servidor http escuchando en el puerto ${server.address().port}`);
+  console.log(`Servidor escuchando en el puerto ${server.address().port}`);
 });
-
-server.on("error", (error) => console.log(`Error en el servidor ${error}`));
+server.on("error", (error) => console.log(`Error en servidor ${error}`));
