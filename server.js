@@ -2,16 +2,19 @@ import express from "express";
 import Products from "./api/products.js";
 import Carts from "./api/carts.js";
 //import http from "http";
-//import {Server} from "socket.io";
+import {Server} from "socket.io";
 //import {create} from "express-handlebars"
 
 let products = new Products();
 let carts = new Carts();
 
 const app = express();
-app.use(express.static("public"));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static("./public"));
 //const server = http.createServer(app);
-//const io = new Server(server);
+const io = new Server(server);
 //const hbs = create({ defaultLayout: 'index', extname: '.hbs',});
 
 const routerProducts = express.Router();
@@ -20,9 +23,14 @@ const routerCarts = express.Router();
 app.use("/api", routerProducts);
 app.use("/api", routerCarts);
 
-//app.engine("handlebars", hbs.engine)
-//app.set("view engine","handlebars")
-//app.set("views", "./views")
+
+
+app.set("view engine","hbs")
+app.set("views", "./views")
+app.use(express.static("./public"));
+
+routerProducts.use(express.static("./public"));
+
 
 routerProducts.use(express.json());
 routerProducts.use(express.urlencoded({ extended: true }));
@@ -30,7 +38,9 @@ routerCarts.use(express.json());
 routerCarts.use(express.urlencoded({ extended: true }));
 
 routerProducts.get("/products/list", (req, res) => {
-  res.json(products.listAll());
+  
+  res.render("products", products.listAll())
+  //res.json(products.listAll());
 });
 
 routerProducts.get("/products/list/:pid", (req, res) => {
@@ -68,8 +78,13 @@ routerCarts.get("/carts/:cid", (req, res) => {
   res.json(carts.listCid(cid));
 });
 
-
-/*
+routerCarts.post("/carts/:cid/products/:pid", (req, res)=>{
+  let cart = req.body;
+  let { cid } = req.params;
+  let { pid } = req.params;
+  carts.push(cart(pid));
+  res.json(carts.refresh(cid))
+})
 io.on("conection", (socket)=>{
   console.log("Usuario conectado")
 
@@ -80,7 +95,7 @@ io.on("conection", (socket)=>{
   socket.on("disconect", ()=>{
       console.log("Usuario desconectado")
   })
-})*/
+})
 
 const PORT = 8080;
 const server = app.listen(PORT, () => {
