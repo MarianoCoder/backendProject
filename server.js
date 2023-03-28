@@ -1,21 +1,20 @@
 import express from "express";
-import Products from "./api/products.js";
-import Carts from "./api/carts.js";
-//import http from "http";
-import {Server} from "socket.io";
-//import {create} from "express-handlebars"
+import Products from "./dao/fs/products.js";
+import Carts from "./dao/fs/carts.js";
+import http from "http";
+import app from "./app.js"
+//import { init } from "./socket.js";
+
 
 let products = new Products();
 let carts = new Carts();
 
-const app = express();
+//const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static("./public"));
-//const server = http.createServer(app);
-const io = new Server(server);
-//const hbs = create({ defaultLayout: 'index', extname: '.hbs',});
+
 
 const routerProducts = express.Router();
 const routerCarts = express.Router();
@@ -40,7 +39,7 @@ routerCarts.use(express.urlencoded({ extended: true }));
 routerProducts.get("/products/list", (req, res) => {
   
   res.render("products", products.listAll())
-  //res.json(products.listAll());
+  res.json(products.listAll());
 });
 
 routerProducts.get("/products/list/:pid", (req, res) => {
@@ -85,20 +84,13 @@ routerCarts.post("/carts/:cid/products/:pid", (req, res)=>{
   carts.push(cart(pid));
   res.json(carts.refresh(cid))
 })
-io.on("conection", (socket)=>{
-  console.log("Usuario conectado")
 
-  socket.on("mensaje", (mensaje)=>{
-      io.emit("mensaje", mensaje)
-  })
 
-  socket.on("disconect", ()=>{
-      console.log("Usuario desconectado")
-  })
-})
+const PORT = process.env.NODE_PORT || 3000;
+const server = http.createServer(app);
 
-const PORT = 8080;
-const server = app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${server.address().port}`);
+init(server);
+
+server.listen(PORT, () => {
+  console.log(`Server running in http://localhost:${PORT}/`);
 });
-server.on("error", (error) => console.log(`Error en servidor ${error}`));
