@@ -1,21 +1,19 @@
-import { Router } from "express"
+import { Router } from "express";
 
+const router = Router();
 
-const router = Router()
+router.get("/", (req, res) => {
+  const products = [
+    {
+      title: "Patricio",
+      description: "Estrella",
+      code: "25",
+      price: "33258968",
+      stock: "Programacion",
+      category: "10",
+    },
+  ];
+  res.render("products", { products });
+});
 
-router.get("/", (req, res)=>{
-    const products = [
-        {
-            "title": "Patricio",
-            "description": "Estrella",
-            "code": "25",
-            "price": "33258968",
-            "stock": "Programacion",
-            "category": 10,
-        },
-    ]
-res.render("products", { products })
-
-})
-
-export default router
+export default router;
