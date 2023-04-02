@@ -1,16 +1,16 @@
 <h1>Products</h1>
 
-<table id="main">
+<table id="main" role="grid">
     <tr>
         <th>Nombre</th>
         <th>Descripción</th>
         <th>Código</th>
-        <th>Precio</th>
+        <th><a href="{{sortLink}}">Precio</a></th>
         <th>Stock</th>
         <th>Categoría</th>
     </tr>
 
-    {{#each products}}
+    {{#each payload}}
     <tr>
         <td>{{this.title}}</td>
         <td>{{this.description}}</td>
@@ -22,3 +22,11 @@
     {{/each}}
 
 </table>
+
+<p>Página actual: {{page}}</p>
+{{#if prevLink}}
+  <a href="{{prevLink}}" role="button">Anterior</a>
+{{/if}}
+{{#if nextLink}}
+  <a href="{{nextLink}}" role="button">Siguente</a>
+{{/if}}

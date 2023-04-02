@@ -2,30 +2,27 @@ import express from "express";
 import apiRouter from "./routers/api/index.js";
 import viewsRouter from "./routers/views/index.js";
 import { init } from "./dao/db/mongodb.js";
-import ProductModel from "./dao/models/product.js"
+import path from "path";
+import { fileURLToPath } from "url";
+import routers from "./routers/index.js";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
- await init();
+await init();
+
 const app = express();
-
-app.get("/", async (req, res) =>{
-    const options ={
-        limit: 10,
-        page: 1
-    }
-    const result = await ProductModel.paginate({}, options)
-    res.json(result)
-})
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/static", express.static("./public"));
+//app.use("/static", express.static("./public"));
+app.use("/static", express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "hbs");
-app.set("views", "./views");
+app.set("views", path.join(__dirname, "views"));
 
-app.use("/", viewsRouter);
+//app.use("/", viewsRouter);
 app.use("/api", apiRouter);
-
+app.use("/", routers);
 
 export default app;
