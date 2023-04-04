@@ -4,6 +4,9 @@ import Carts from "./dao/fs/carts.js";
 import http from "http";
 import app from "./app.js";
 import { init } from "./socket.js";
+import dotenv from "dotenv"
+
+dotenv.config()
 
 let products = new Products();
 let carts = new Carts();
