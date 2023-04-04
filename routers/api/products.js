@@ -11,7 +11,7 @@ router
   //.get("/products", ProductsController.get)
   .get("/", async (req, res) => {
     const {
-      query: { limit = 10, page = 1 },
+      query: { limit = 10, page = 1 }
     } = req;
     const options = {
       limit,
