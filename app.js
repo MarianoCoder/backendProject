@@ -5,6 +5,7 @@ import { init } from "./dao/db/mongodb.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import routers from "./routers/index.js";
+import cookieParser from "cookie-parser";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +14,7 @@ await init();
 
 const app = express();
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //app.use("/static", express.static("./public"));
