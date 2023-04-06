@@ -9,10 +9,11 @@ import cookieParser from "cookie-parser";
 import expressSession from "express-session"
 import MongoStore from "connect-mongo"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 await init();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -20,7 +21,7 @@ const app = express();
 app.use(expressSession(
     {store: MongoStore.create({
         mongoUrl: process.env.MONGODB_URI,
-        mongooptiones: {},
+        mongoOptions: {},
         ttl: 20,
     }),
     secret: process.env.COOKIE_SECRET,
@@ -31,8 +32,8 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //app.use("/static", express.static("./public"));
-app.use("/static", express.static(path.join(__dirname, "public")));
-
+//app.use("/static", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
@@ -40,9 +41,9 @@ app.set("views", path.join(__dirname, "views"));
 app.use("/api", apiRouter);
 app.use("/", routers);
 
-const auth = (req, res, next)=>{
+/*const auth = (req, res, next)=>{
     if (req.session.email == 'jose@maria.com' && req.session.admin) {
-       return next()
+    return next()
     }
     res.status(401).send("Error de autenticacion")
 }
@@ -76,7 +77,7 @@ app.post("/logout", (req, res) => {
         }
     })
 
-})
+})  */
 
 
 export default app;
