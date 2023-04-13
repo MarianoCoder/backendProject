@@ -6,11 +6,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 import routers from "./routers/index.js";
 import cookieParser from "cookie-parser";
-import expressSession from "express-session"
-import MongoStore from "connect-mongo"
+import expressSession from "express-session";
+import MongoStore from "connect-mongo";
+import passport from "passport";
+import initPassport from "./config/passport.config.js"
 
 
 await init();
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -36,6 +39,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
+
+initPassport();
+app.use(passport.initialize())
+app.use(passport.session())
 
 //app.use("/", viewsRouter);
 app.use("/api", apiRouter);

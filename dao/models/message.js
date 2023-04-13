@@ -1,11 +1,14 @@
 import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
-const mensaje = new mongoose.Schema(
+const MessageSchema = new mongoose.Schema(
   {
-    nombre: { type: String, require: true },
-    mensaje: { type: String, require: true },
+    user: { type: String, require: true },
+    message: { type: String, require: true },
   },
   { timestamps: true }
-);
+)
 
-export default mongoose.model("Mensaje", mensaje);
+MessageSchema.plugin(mongoosePaginate);
+
+export default mongoose.model("message", MessageSchema);
