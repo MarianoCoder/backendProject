@@ -1,5 +1,6 @@
 import passport from "passport"
 import { Strategy as LocalStrategy } from "passport-local"
+import { Strategy as GithubStrategy } from "passport-github2"
 
 import UserModel from "../dao/models/users.js"
 import { createHash, validatePassword } from "../utils/index.js"
@@ -55,6 +56,31 @@ const initPassport = () => {
     }catch (error){
         return done(new Error("Error al obtener el usuario", error.message))
     }
+
+    }))
+
+    const githubOptions ={
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK,
+    }
+    passport.use(new GithubStrategy(githubOptions, async(acessToken, refreshToken, profile, done)=>{
+        try{
+            console.log("profile", profile)
+            let user = await UserModel.findOne({ email: profile._json.email });
+            if (!user) {
+                user = await UserModel.create({
+                first_name: profile._json.name,
+                last_name: "",
+                email: profile._json.email,
+                age: 18,
+                password: "",
+            })
+        }     
+            done(null, user)
+        }catch (error){
+            return done(new Error("Error al obtener el usuario", error.message))
+        }
 
     }))
 

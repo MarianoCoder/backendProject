@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import passport from "passport";
 const router = Router();
 
 const auth = (req, res, next) => {
@@ -24,5 +24,7 @@ router.get("/reset-password", (req, res) => {
 router.get("/profile", auth, (req, res) => {
   res.render("profile", req.session.user);
 });
+
+router.get("/auth/github", passport.authenticate("github", { scope: ["user:email"]}) )
 
 export default router;
