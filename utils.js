@@ -1,4 +1,16 @@
+import bcrypt from "bcrypt";
+import jsonwebtoken from "jsonwebtoken";
+import passport from "passport"
 import multer from "multer"
+
+
+export const createHash = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+
+export const validatePassword = (password, user) => {
+  return bcrypt.compareSync(password, user.password);
+};
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb){
@@ -10,3 +22,4 @@ const storage = multer.diskStorage({
 })
 
 export const uploader = multer({ storage })
+

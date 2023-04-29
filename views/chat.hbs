@@ -1,0 +1,18 @@
+<h1>Coder House Chat Comunidad</h1>
+
+<ul id="list-messages">
+  {{#each messages}}
+    <li>
+      <p><strong>{{this.name}}</strong>: {{this.message}}</p>
+    </li>
+  {{/each}}
+</ul> 
+
+<form id="form-message">
+  <input type="text" name="fullname" id="input-fullname" placeholder="Ingresa tu nombre" required>
+  <input type="text" name="message" id="input-message" placeholder="Ingresa mensaje..." required>
+  <button type="submit">Enviar</button>
+</form>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/static/javascripts/script.js"></script>

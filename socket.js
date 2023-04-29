@@ -1,6 +1,6 @@
 import { Server } from "socket.io";
 
-import MensajeModel from "./dao/models/message.js";
+import MessageModel from "./dao/models/message.js";
 
 let io;
 
@@ -11,7 +11,7 @@ export const init = (httpServer) => {
     console.log("Nuevo cliente conectado", socketClient.id);
 
     socketClient.on("new-message", async (data) => {
-      const mensaje = await MensajeModel.create(data);
+      const message = await MessageModel.create(data);
       io.emit("notification", mensaje);
     });
     socketClient.on("disconection", () => {
@@ -20,6 +20,6 @@ export const init = (httpServer) => {
   });
 };
 
-export const emit = (mensaje) => {
-  io.emit("notification", mensaje);
+export const emit = (message) => {
+  io.emit("notification", message);
 };

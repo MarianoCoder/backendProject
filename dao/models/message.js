@@ -3,7 +3,7 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const MessageSchema = new mongoose.Schema(
   {
-    user: { type: String, require: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", require: true },
     message: { type: String, require: true },
   },
   { timestamps: true }
