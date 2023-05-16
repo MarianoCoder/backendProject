@@ -10,6 +10,7 @@ import expressSession from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import initPassport from "./config/passport.config.js"
+import cors from "cors"
 
 
 await init();
@@ -31,6 +32,7 @@ app.use(expressSession(
     resave: false,
     saveUninitialized:false,
 }))
+app.use(cors())
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
