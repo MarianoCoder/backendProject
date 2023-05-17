@@ -110,6 +110,10 @@ app.use(passport.session());
 app.use("/api", apiRouter);
 app.use("/", routers);
 
+app.use((err, req, res, next) =>{
+  console.log("Error Middelware", err)
+  res.status(error.status || 500).json({message: err.message })
+})
 /*const auth = (req, res, next)=>{
     if (req.session.email == 'jose@maria.com' && req.session.admin) {
     return next()

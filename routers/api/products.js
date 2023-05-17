@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { uploader } from "../../utils.js";
 import ProductsController from "../../controllers/products.js";
-import StudentModel from "../../dao/models/product.js";
+import ProductModel from "../../dao/models/product.js";
 import CommunsUtil from "../../utils/communs.js";
 
 const router = Router();
@@ -17,7 +17,7 @@ router
       limit,
       page,
     };
-    const result = await StudentModel.paginate({}, options);
+    const result = await ProductModel.paginate({}, options);
     res.json(CommunsUtil.buidResponse(result));
   })
   .post("/", uploader.single("thumbnail"), ProductsController.create)
