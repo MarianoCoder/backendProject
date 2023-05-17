@@ -10,8 +10,12 @@ const UserSchema = new mongoose.Schema({
     age: { type: Number, require: true }, 
     password: { type: String, require: true }, 
     cartId: { type: Number, require: true, unique: true },
-    role: { type: String, require: true },
-});
+    role: { type: String, enum:["customer", "admin"], default: "customer" },
+    orders: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order"
+    }]
+}, { timestamps: true });
 
 UserSchema.plugin(mongoosePaginate);
 
