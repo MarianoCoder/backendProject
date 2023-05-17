@@ -9,30 +9,90 @@ import cookieParser from "cookie-parser";
 import expressSession from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
-import initPassport from "./config/passport.config.js"
-import cors from "cors"
-
+import initPassport from "./config/passport.config.js";
+import cors from "cors";
+import nodemailer from "nodemailer";
+import emailService from "./services/email.service.js";
 
 await init();
-
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.get("/mailing", async (req, res) => {
+  res.send(`
+    <div>
+    <h1>📨 Mailing & SMS 📲</h1>
+    <ul>
+    <li><a href="/email">Enviar Email</a></li>
+    <li><a href="/sms">Enviar SMS</a></li>
+    </ul>
+    </div>
+    `);
+});
 
-app.use(expressSession(
-    {store: MongoStore.create({
-        mongoUrl: process.env.MONGODB_URI,
-        mongoOptions: {},
-        ttl: 20,
+app.get("/email", async (req, res) => {
+  const attachments = [
+    {
+      filename: "ddl.png",
+      path: path.join(__dirname, "./public/imgs/ddl.png"),
+      cid: "dulce_de_leche",
+    },
+  ];
+  const result = await emailService.sendEmail(
+    "maoaltacba@gmail.com",
+    "Gracias por tu compra!",
+    `
+    <div>
+    <h1>🛒 Confirmamos tu orden #001</h1>
+    <p>Imagen a modo ilustrativo</p>
+    <img src="cid:dulce_de_leche" />
+    </div>
+    `,
+    attachments
+  );
+  console.log(result);
+  res.send(`
+    <div>
+    <h1>📨 Sección de emails</h1>
+    <a href="/mailing">⬅️ Atrás</a>
+    </div>
+    `);
+});
+
+app.get("/sms", async (req, res) => {
+  res.send(`
+    <div>
+    <h1>📲 Sección de sms</h1>
+    <a href="/mailing">⬅️ Atrás</a>
+    </div>
+    `);
+});
+
+const transport = nodemailer.createTransport({
+  service: "gmail",
+  port: 587,
+  auth: {
+    user: "maoaltacba@gmail.com",
+    pass: "yafazmrjpviivwrs",
+  },
+});
+
+app.use(
+  expressSession({
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URI,
+      mongoOptions: {},
+      ttl: 20,
     }),
     secret: process.env.COOKIE_SECRET,
     resave: false,
-    saveUninitialized:false,
-}))
-app.use(cors())
+    saveUninitialized: false,
+  })
+);
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -43,8 +103,8 @@ app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
 
 initPassport();
-app.use(passport.initialize())
-app.use(passport.session())
+app.use(passport.initialize());
+app.use(passport.session());
 
 //app.use("/", viewsRouter);
 app.use("/api", apiRouter);
@@ -87,6 +147,5 @@ app.post("/logout", (req, res) => {
     })
 
 })  */
-
 
 export default app;
