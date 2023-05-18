@@ -4,11 +4,11 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const businessSchema = new mongoose.Schema({
     name: String,
-    products: [object],
+    products: [Object],
    
 }, { timestamps: true });
 
-UserSchema.plugin(mongoosePaginate);
+businessSchema.plugin(mongoosePaginate);
 
 
 export default mongoose.model("Business", businessSchema);
