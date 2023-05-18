@@ -1,8 +1,17 @@
+import { getUsers, createUser } from "../dao/user.js";
 
-export const get =(query ={})=>{
-    return { status: "success", message: "User listed"}
-}
+export const get = (query = {}) => {
+  const users = getUsers(query);
+  return {
+    status: "success",
+    payload: users,
+  };
+};
 
-export const create =(body)=>{
-    return { status: "success", message: "User created"}
-}
+export const create = (body) => {
+  const user = createUser(body);
+  return {
+    status: "success",
+    payload: user,
+  };
+};
