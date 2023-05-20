@@ -1,23 +1,25 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-
-const UserSchema = new mongoose.Schema({
-  
-    first_name: { type: String, require: true }, 
-    last_name: { type: String, require: true }, 
-    email: { type: String, require: true, unique: true},
-    age: { type: Number, require: true }, 
-    password: { type: String, require: true }, 
+const UserSchema = new mongoose.Schema(
+  {
+    first_name: { type: String, require: true },
+    last_name: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
+    age: { type: Number, require: true },
+    password: { type: String, require: true },
     cartId: { type: Number, require: true, unique: true },
-    role: { type: String, enum:["customer", "admin"], default: "customer" },
-    orders: [{
+    role: { type: String, enum: ["customer", "admin"], default: "customer" },
+    orders: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Order"
-    }]
-}, { timestamps: true });
+        ref: "Order",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
 UserSchema.plugin(mongoosePaginate);
-
 
 export default mongoose.model("User", UserSchema);
