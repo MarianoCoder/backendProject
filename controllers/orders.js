@@ -39,3 +39,25 @@ export const create = async (body) => {
     payload: order,
   };
 };
+
+export const resolve = async (id, body) =>{
+    const order = await getOrderById(id)
+    if(!order){
+        throw new NotFoundException("order not found")
+    }
+
+    const {status}= body
+    order.status = status
+    await updateOrderById(id, order)
+
+    return {
+        status: "success",
+        payload: order
+
+    }
+}
+
+
+
+
+

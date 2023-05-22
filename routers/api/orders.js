@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import {get, create} from "../../controllers/orders.js"
+import {get, create, resolve} from "../../controllers/orders.js"
 
 const router = Router()
 
@@ -21,5 +21,16 @@ router.post("/",async (req, res, next)=>{
     next(error)
     }
 })
+
+router.put("/:id/resolve",async (req, res, next)=>{
+    try{
+        const order = await resolve(req.params.id, req.body)
+        res.status(200).json(order)
+    } catch(error){
+    next(error)
+    }
+})
+
+
 
 export default router
