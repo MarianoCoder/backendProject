@@ -12,7 +12,7 @@ export class NotFoundException extends Exception {
 }
 
 export class BadRequestException extends Exception {
-  constructor(message = "Bar request") {
+  constructor(message = "Bad request") {
     super(message, 400);
   }
 }

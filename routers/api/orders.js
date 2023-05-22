@@ -4,7 +4,7 @@ import {get, create} from "../../controllers/orders.js"
 
 const router = Router()
 
-router.get("/", async (req,res, next)=>{
+router.get("/", async (req, res, next)=>{
     try{
         const orders = await get(req.query)
         res.status(200).json(orders)
@@ -13,7 +13,7 @@ router.get("/", async (req,res, next)=>{
     }
 })
 
-router.post("/",async (req,res)=>{
+router.post("/",async (req, res, next)=>{
     try{
         const order = await create(req.body)
         res.status(201).json(order)

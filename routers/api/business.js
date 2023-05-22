@@ -13,7 +13,7 @@ router.get("/", async (req,res, next)=>{
     }
 })
 
-router.post("/",async (req,res)=>{
+router.post("/",async (req, res, next)=>{
     try{
         const business = await create(req.body)
         res.status(201).json(business)
