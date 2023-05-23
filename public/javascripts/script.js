@@ -1,4 +1,23 @@
 (function() {
+  fetch('http://localhost:3000/api/business')
+    .then((response) => response.json())
+    .then((data) => {
+      const list = document.getElementById('list')
+      data.payload.forEach((business) => {
+        const li = document.createElement('li')
+        li.innerHTML = `
+          <h3>${business.name}</h3>
+        `
+        list.appendChild(li)
+      })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+})();
+
+
+(function() {
     const socket = io();
   
     const formMessage = document.getElementById('form-message');
