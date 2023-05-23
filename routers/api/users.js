@@ -4,7 +4,7 @@ import {get, create} from "../../controllers/users.js"
 
 const router = Router()
 
-router.get("/", async (req,res, next)=>{
+router.get("/", async (req, res, next)=>{
     try{
         const users = await get(req.query)
         res.status(200).json(users)
@@ -13,7 +13,7 @@ router.get("/", async (req,res, next)=>{
     }
 })
 
-router.post("/",async (req,res)=>{
+router.post("/",async (req, res, next)=>{
     try{
         const user = await create(req.body)
         res.status(201).json(user)

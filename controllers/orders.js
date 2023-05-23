@@ -1,6 +1,8 @@
 import {
   getOrders,
   createOrder,
+  getOrderById,
+  updateOrderById,
   updateOrderById,
   getOrderById,
 } from "../dao/order.js";
@@ -26,17 +28,15 @@ export const create = async (body) => {
   if (!business) {
     throw new NotFoundException("Business not found");
   }
-
   const total = products.reduce((acc, product) => {
     return acc + product.price * product.quantity;
   }, 0);
 
-  const order = await createOrder({
-    user: userId,
-    business: businessId,
+  const newOrder = {
+    user: user._id,
+    business: business._id,
     products,
-    total,
-  });
+  };
 
   return {
     status: "success",
@@ -47,8 +47,9 @@ export const create = async (body) => {
 export const resolve = async (id, body) => {
   const order = await getOrderById(id);
   if (!order) {
-    throw new NotFoundException("Order not found");
+    throw new NotFoundException("order not found");
   }
+
   const { status } = body;
   order.status = status;
   await updateOrderById(id, order);
