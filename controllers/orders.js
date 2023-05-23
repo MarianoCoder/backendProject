@@ -1,4 +1,11 @@
-import { getOrders, createOrder, getOrderById, updateOrderById } from "../dao/order.js";
+import {
+  getOrders,
+  createOrder,
+  getOrderById,
+  updateOrderById,
+  updateOrderById,
+  getOrderById,
+} from "../dao/order.js";
 import { getUserById } from "../dao/user.js";
 import { getBusinessById } from "../dao/business.js";
 import { NotFoundException } from "../utils/error.js";
@@ -12,7 +19,7 @@ export const get = async (query = {}) => {
 };
 
 export const create = async (body) => {
-  const { products, business: businessId, user: userId, } = body;
+  const { products, business: businessId, user: userId } = body;
   const user = await getUserById(userId);
   if (!user) {
     throw new NotFoundException("User not found");
@@ -21,18 +28,15 @@ export const create = async (body) => {
   if (!business) {
     throw new NotFoundException("Business not found");
   }
-  const total = products.reduce((acc, product)=>{
-    return acc + product.price * product.quantity
-  }, 0)
+  const total = products.reduce((acc, product) => {
+    return acc + product.price * product.quantity;
+  }, 0);
 
-    const NewOrder = {
-        user: user.id,
-        business: business.id,
-        products,
-        total,
-    }
-
-  const order = await createOrder(NewOrder)
+  const newOrder = {
+    user: user._id,
+    business: business._id,
+    products,
+  };
 
   return {
     status: "success",
@@ -40,24 +44,18 @@ export const create = async (body) => {
   };
 };
 
-export const resolve = async (id, body) =>{
-    const order = await getOrderById(id)
-    if(!order){
-        throw new NotFoundException("order not found")
-    }
+export const resolve = async (id, body) => {
+  const order = await getOrderById(id);
+  if (!order) {
+    throw new NotFoundException("order not found");
+  }
 
-    const {status}= body
-    order.status = status
-    await updateOrderById(id, order)
+  const { status } = body;
+  order.status = status;
+  await updateOrderById(id, order);
 
-    return {
-        status: "success",
-        payload: order
-
-    }
-}
-
-
-
-
-
+  return {
+    status: "success",
+    payload: order,
+  };
+};
