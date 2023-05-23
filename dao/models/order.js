@@ -22,19 +22,14 @@ const OrderSchema = new mongoose.Schema(
         price: {
           type: Number,
         },
-      },
+      }
     ],
     total: Number,
-<<<<<<< HEAD
     status: {
       type: String,
       enum: ["pending", "completed", "cancelled"],
-      default: "pending",
+      default: "pending"},
     },
-=======
-    status: { type: String, enum: ["pending", "completed", "cancelled"], default: 'pending' },
->>>>>>> 1d845590fe7b2844a0b3e0d5b6439eb81f212db7
-  },
   { timestamps: true }
 );
 

@@ -2,9 +2,7 @@ import {
   getOrders,
   createOrder,
   getOrderById,
-  updateOrderById,
-  updateOrderById,
-  getOrderById,
+  updateOrderById
 } from "../dao/order.js";
 import { getUserById } from "../dao/user.js";
 import { getBusinessById } from "../dao/business.js";
@@ -36,13 +34,18 @@ export const create = async (body) => {
     user: user._id,
     business: business._id,
     products,
+    total
   };
+
+  const order = await createOrder(newOrder)
 
   return {
     status: "success",
     payload: order,
   };
 };
+
+
 
 export const resolve = async (id, body) => {
   const order = await getOrderById(id);
