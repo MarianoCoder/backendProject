@@ -2,7 +2,7 @@ import {
   getOrders,
   createOrder,
   getOrderById,
-  updateOrderById
+  updateOrderById,
 } from "../dao/order.js";
 import { getUserById } from "../dao/user.js";
 import { getBusinessById } from "../dao/business.js";
@@ -34,10 +34,10 @@ export const create = async (body) => {
     user: user._id,
     business: business._id,
     products,
-    total
+    total,
   };
 
-  const order = await createOrder(newOrder)
+  const order = await createOrder(newOrder);
 
   return {
     status: "success",
@@ -45,7 +45,54 @@ export const create = async (body) => {
   };
 };
 
+export const getById = async (id) => {
+  const order = await getOrderById(id);
+  if (!order) {
+    throw new NotFoundException("Order not found");
+  }
+  return {
+    status: "success",
+    payload: order,
+  };
+};
 
+export const updateById = async (id, body) => {
+  const order = await getOrderById(id);
+  if (!order) {
+    throw new NotFoundException("Order not found");
+  }
+  const result = await updateOrderById(id, body);
+  return {
+    status: "success",
+    payload: result,
+  };
+};
+
+export const removeById = async (id) => {
+  const order = await getOrderById(id);
+  if (!order) {
+    throw new NotFoundException("Order not found");
+  }
+  const result = await deleteOrderById(id);
+  return {
+    status: "success",
+    payload: result,
+  };
+};
+
+export const addProduct = async (id, body) => {
+  const order = await getOrderById(id);
+  if (!order) {
+    throw new NotFoundException("Order not found");
+  }
+  const { products } = body;
+  order.products = products;
+  await updateOrderById(id, order);
+  return {
+    status: "success",
+    payload: order,
+  };
+};
 
 export const resolve = async (id, body) => {
   const order = await getOrderById(id);
