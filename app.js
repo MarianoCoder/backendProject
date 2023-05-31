@@ -13,6 +13,7 @@ import initPassport from "./config/passport.config.js";
 import cors from "cors";
 import nodemailer from "nodemailer";
 import emailService from "./services/email.service.js";
+import errorMiddleware from "./utils/MiddlewareError.js"
 
 await init();
 
@@ -101,6 +102,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
+app.use(errorMiddleware)
 
 initPassport();
 app.use(passport.initialize());
