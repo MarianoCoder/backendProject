@@ -1,9 +1,20 @@
 import bcrypt from "bcrypt";
-import jsonwebtoken from "jsonwebtoken"
+import jsonwebtoken from "jsonwebtoken";
+import { faker } from "@faker-js/faker";
 
+export const generateProduct = () => ({
+  title: faker.commerce.productName(),
+  price: faker.commerce.price(),
+  image: faker.image.url(),
+  price: parseFloat(faker.commerce.price()),
+  stock: parseInt(faker.string.numeric()),
+  description: faker.commerce.productDescription(),
+  id: faker.database.mongodbObjectId(),
+  category: faker.commerce.department(),
+});
 
 // JWT DESDE ACA
-const JWT_SECRET = process.env.JWT_SECRET
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export const tokenGenerator = (user) => {
   const payload = {
@@ -12,24 +23,24 @@ export const tokenGenerator = (user) => {
     last_name: user.last_name,
     email: user.email,
     age: user.age,
-  }
-  const token = jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: '24h' })
-  return token
-}
+  };
+  const token = jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+  return token;
+};
 
 export const isValidToken = (token) => {
   return new Promise((resolve) => {
     jsonwebtoken.verify(token, JWT_SECRET, (error, payload) => {
       if (error) {
-        console.log('err', error)
-        return resolve(false)
+        console.log("err", error);
+        return resolve(false);
       }
-      console.log('payload', payload)
-      return resolve(payload)
-    })
-    return token
-  })
-}
+      console.log("payload", payload);
+      return resolve(payload);
+    });
+    return token;
+  });
+};
 
 // JWT HASTA ACA
 

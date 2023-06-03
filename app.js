@@ -13,7 +13,9 @@ import initPassport from "./config/passport.config.js";
 import cors from "cors";
 import nodemailer from "nodemailer";
 import emailService from "./services/email.service.js";
-import errorMiddleware from "./utils/MiddlewareError.js"
+import errorMiddleware from "./utils/MiddlewareError.js";
+import { addLogger } from "./utils/logger.js";
+import { generateProduct } from "./utils/index.js";
 
 await init();
 
@@ -102,7 +104,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
-app.use(errorMiddleware)
+app.use(errorMiddleware);
 
 initPassport();
 app.use(passport.initialize());
@@ -111,11 +113,21 @@ app.use(passport.session());
 //app.use("/", viewsRouter);
 app.use("/api", apiRouter);
 app.use("/", routers);
+app.use(addLogger);
 
 app.use((error, req, res, next) => {
   console.error("Error Middelware", error);
   res.status(error.status || 500).json({ message: error.message });
 });
+
+app.get("/api/mockingproducts", (req, res) => {
+  const products = [];
+  for (let i = 0; i < 100; i++) {
+    products.push(generateProduct());
+  }
+  res.status(200).json({ status: true, data: products });
+});
+
 /*const auth = (req, res, next)=>{
     if (req.session.email == 'jose@maria.com' && req.session.admin) {
     return next()

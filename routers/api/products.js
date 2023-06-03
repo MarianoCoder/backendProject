@@ -1,5 +1,4 @@
 import { Router } from "express";
-
 import { uploader } from "../../utils.js";
 import ProductsController from "../../controllers/products.js";
 import ProductModel from "../../dao/models/product.js";
@@ -11,7 +10,7 @@ router
   //.get("/products", ProductsController.get)
   .get("/", async (req, res) => {
     const {
-      query: { limit = 10, page = 1 }
+      query: { limit = 10, page = 1 },
     } = req;
     const options = {
       limit,
