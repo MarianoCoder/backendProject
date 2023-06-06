@@ -1,26 +1,50 @@
 import winston from "winston";
 
+const env = process.env.NODE_ENV || "development";
+
 const options = {};
+
+if (env === "production") {
+  options.levels = customeLogger.levels;
+  options.transports = [
+    new winston.transports.Console({
+      level: "info",
+      format: winston.format.combine(
+        winston.format.colorize({ colors: customeLogger.colors }),
+        winston.format.simple()
+      ),
+    }),
+    new winston.transports.File({
+      level: "error",
+      filename: "logs/error.log",
+      format: winston.format.simple(),
+    }),
+  ];
+} else {
+  options.transports = [new winston.transports.Console({ level: "debug" })];
+}
 
 const customeLogger = {
   levels: {
-    fatal: 0,
-    error: 1,
-    warning: 2,
-    info: 3,
-    debug: 4,
+    debug: 0,
+    http: 1,
+    info: 2,
+    warning: 3,
+    error: 4,
+    fatal: 5,
   },
   colors: {
-    fatal: "red",
+    debug: "blue",
+    http: "cyan",
+    info: "green",
+    warning: "yellow",
     error: "orange",
-    warning: "blue",
-    info: "black",
-    debug: "brown",
+    fatal: "red",
   },
 };
-const logger = winston.createLogger({
-  transports: [new winston.transports.Console({ level: "http" })],
-});
+const logger = winston.createLogger(options);
+logger.info(`NODE_ENV=${env}`);
+
 export const addLogger = (req, res, next) => {
   req.logger = logger;
   req.logger.http(

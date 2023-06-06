@@ -115,6 +115,14 @@ app.use("/api", apiRouter);
 app.use("/", routers);
 app.use(addLogger);
 
+app.get("/logger", (req, res) => {
+  req.logger.warn("Esto fue un warn");
+  req.logger.error("Esto fue un error");
+  req.logger.info("Esto fue un info");
+  req.logger.debug("Esto fue un debug");
+  res.send("<h1> Hello world </h1>");
+});
+
 app.use((error, req, res, next) => {
   console.error("Error Middelware", error);
   res.status(error.status || 500).json({ message: error.message });
