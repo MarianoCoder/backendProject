@@ -10,6 +10,7 @@ const ProductSchema = new mongoose.Schema(
     stock: { type: Number, require: true },
     category: { type: String, require: true },
     thumbnail: { type: String },
+    owner: { type: String, enum: ["user", "admin"], default: "admin" },
   },
   { timestamps: true }
 );
