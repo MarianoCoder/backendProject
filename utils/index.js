@@ -14,17 +14,22 @@ export const generateProduct = () => ({
 });
 
 // JWT DESDE ACA
+
+export const createHash = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
+};
+
+export const validatePassword = (password, user) => {
+  return bcrypt.compareSync(password, user.password);
+};
+
 const JWT_SECRET = process.env.JWT_SECRET;
 
-export const tokenGenerator = (user) => {
+export const tokenGenerator = (user, exp = "24h") => {
   const payload = {
     id: user._id,
-    first_name: user.first_name,
-    last_name: user.last_name,
-    email: user.email,
-    age: user.age,
   };
-  const token = jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: "24h" });
+  const token = jsonwebtoken.sign(payload, JWT_SECRET, { expiresIn: exp });
   return token;
 };
 
@@ -40,14 +45,4 @@ export const isValidToken = (token) => {
     });
     return token;
   });
-};
-
-// JWT HASTA ACA
-
-export const createHash = (password) => {
-  return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-};
-
-export const validatePassword = (password, user) => {
-  return bcrypt.compareSync(password, user.password);
 };

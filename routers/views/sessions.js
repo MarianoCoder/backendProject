@@ -21,10 +21,20 @@ router.get("/reset-password", (req, res) => {
   res.render("reset-password");
 });
 
+router.get("/change-password", (req, res) => {
+  const {
+    query: { token },
+  } = req;
+  res.render("change-password", { token });
+});
+
 router.get("/profile", auth, (req, res) => {
   res.render("profile", req.session.user);
 });
 
-router.get("/auth/github", passport.authenticate("github", { scope: ["user:email"]}) )
+router.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
 export default router;
