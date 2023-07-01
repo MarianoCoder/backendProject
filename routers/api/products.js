@@ -19,6 +19,7 @@ router
     const result = await ProductModel.paginate({}, options);
     res.json(CommunsUtil.buidResponse(result));
   })
+  .get("/:id", ProductsController.getById)
   .post("/", uploader.single("thumbnail"), ProductsController.create)
   .put("/:id", ProductsController.updateById)
   .delete("/:id", ProductsController.deleteById);

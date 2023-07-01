@@ -16,6 +16,9 @@ import emailService from "./services/email.service.js";
 import errorMiddleware from "./utils/MiddlewareError.js";
 import { addLogger } from "./utils/logger.js";
 import { generateProduct } from "./utils/index.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import SwaggerUi from "swagger-ui-express";
+//import { log } from "winston";
 
 await init();
 
@@ -136,42 +139,20 @@ app.get("/api/mockingproducts", (req, res) => {
   res.status(200).json({ status: true, data: products });
 });
 
-/*const auth = (req, res, next)=>{
-    if (req.session.email == 'jose@maria.com' && req.session.admin) {
-    return next()
-    }
-    res.status(401).send("Error de autenticacion")
-}
+console.log("path", path.join(__dirname, "docs", "**", "*.yaml"));
 
-app.post("/login", (req, res)=>{
+const swaggerOptions = {
+  definition: {
+    openapi: "3.0.1",
+    info: {
+      title: "Porte Real",
+      description: "Porte Real APi Information",
+    },
+  },
+  apis: [path.join(__dirname, "docs", "**", "*.yaml")],
+};
 
-    const{ body:{ email, password }} = req
-    if(email !== 'jose@maria.com' || password !== '1234') {
-        return res.send('login failed')
-    }
-
-    req.session.email = email
-    req.session.admin = true
-    res.send(`<h1>Login success!!</h1>`)
-})
-    
-app.get("/public-endpoint", (req, res)=>{
-    res.send("/public endpoint")
-})
-app.get("/private-endpoint", auth, (req, res) =>{
-    res.send("private endpoint")
-})
-
-
-app.post("/logout", (req, res) => {
-    req.session.destroy(error => {
-        if (!error) {
-            res.send("Logout OK")
-        }else{
-            res.send({status: "Logout Error", body: error})
-        }
-    })
-
-})  */
+const specs = swaggerJSDoc(swaggerOptions);
+app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
 
 export default app;

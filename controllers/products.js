@@ -16,12 +16,14 @@ class ProductsController {
   }
 
   static async getById(req, res) {
-    const { params: { id } } = req
-    const result = await ProductModel.findById(id)
+    const {
+      params: { id },
+    } = req;
+    const result = await ProductModel.findById(id);
     if (!result) {
-      return res.status(404).end()
+      return res.status(404).end();
     }
-    res.status(200).json(result)
+    res.status(200).json(result);
   }
 
   static async updateById(req, res) {

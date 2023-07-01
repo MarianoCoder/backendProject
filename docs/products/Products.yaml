@@ -1,0 +1,164 @@
+paths:
+  /api/products:
+    get:
+      summary: List products
+      tags:
+        - Products
+      responses:
+        200:
+          description: List of products
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+        500:
+          description: Intern server error
+
+  /api/products/{id}:
+    get:
+      summary: Get product by ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        500:
+          description: Intern server error
+    put:
+      summary: Update product by ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateProduct"
+      responses:
+        200:
+          description: Product updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        500:
+          description: Intern server error
+    delete:
+      summary: Delete product by ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        200:
+          description: Product deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        404:
+          description: Product not found
+        500:
+          description: Intern server error
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Product ID
+        title:
+          type: string
+          description: Product name
+        description:
+          type: string
+          description: Product description
+        code:
+          type: number
+          description: Product code
+        price:
+          type: number
+          description: Product price
+        stock:
+          type: number
+          description: Product stock
+        category:
+          type: string
+          description: Product category
+        thumbnail:
+          type: file
+          description: Product image
+      example:
+        _id: 609a89r5g4g7g
+        title: butter
+        description: excellent butter for all recipes
+        code: 5795
+        price: 15
+        stock: 25
+        category: cooking
+        thumbnail: butter.jpg
+
+  requestBodies:
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Product name
+        description:
+          type: string
+          description: Product description
+        code:
+          type: number
+          description: Product code
+        price:
+          type: number
+          description: Product price
+        stock:
+          type: number
+          description: Product stock
+        category:
+          type: string
+          description: Product category
+        thumbnail:
+          type: file
+          description: Product image
+      example:
+        _id: 609a89r5g4g7g
+        title: butter
+        description: excellent butter for all recipes
+        code: 5795
+        price: 15
+        stock: 25
+        category: cooking
+        thumbnail: butter.jpg
