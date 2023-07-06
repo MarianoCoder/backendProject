@@ -36,6 +36,8 @@
     "winston": "^3.9.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "chai": "^4.3.7",
+    "dotenv": "^16.0.3",
+    "mocha": "^10.2.0"
   }
 }
