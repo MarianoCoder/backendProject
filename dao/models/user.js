@@ -20,6 +20,16 @@ const UserSchema = new mongoose.Schema(
         ref: "Order",
       },
     ],
+    documents: [
+      {
+        name: {
+          type: String,
+        },
+        ref: {
+          type: String,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

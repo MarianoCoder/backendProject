@@ -61,7 +61,7 @@ describe("Pruebas al modulo de products dao", () => {
     });
     result = await this.productsDao.getBy({ code: 5795 });
 
-    assert.ok(result._id);
+    assert.ok(result._code);
     assert.strictEqual(Array.isArray(result.product), true);
     assert.deepStrictEqual(result.product, []);
     assert.strictEqual(result.code, 5795);

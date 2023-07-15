@@ -45,4 +45,31 @@ router.post("/mockingusers", async (req, res, next) => {
   }
 });
 
+router.get("/premium/:uid", async (req, res, next) => {
+  try {
+    const users = await get(req.query);
+    res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/premium/:uid", async (req, res, next) => {
+  try {
+    const user = await create(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/:uid/documents", async (req, res, next) => {
+  try {
+    const user = await create(req.body);
+    res.status(201).json(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
