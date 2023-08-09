@@ -13,7 +13,7 @@ Abrir http://localhost:3000 para ver las vistas en el buscador, o bien a través
 
 Dentro del directorio se encuenta un archivo data.json con ejemplos para agregar un producto.
 
-# Hasta el momento las funcionalidades que incluye el proyecto son:
+# Hasta el momento las funcionalidades que incluye el proyecto son
 
 - Crear un usuario, modificar sus datos, eliminar un usuario, cambiar la contraseña, loguin y logout del usuario. 👤
   Y también iniciar sesión a traves de github en http://localhost:3000/login
