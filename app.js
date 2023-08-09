@@ -18,7 +18,6 @@ import { addLogger } from "./utils/logger.js";
 import { generateProduct } from "./utils/index.js";
 import swaggerJSDoc from "swagger-jsdoc";
 import SwaggerUi from "swagger-ui-express";
-//import { log } from "winston";
 
 await init();
 
@@ -91,7 +90,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGODB_URI,
       mongoOptions: {},
-      ttl: 20,
+      ttl: 1600,
     }),
     secret: process.env.COOKIE_SECRET,
     resave: false,
@@ -99,11 +98,10 @@ app.use(
   })
 );
 app.use(cors());
-app.use(cookieParser());
+app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-//app.use("/static", express.static("./public"));
-//app.use("/static", express.static(path.join(__dirname, "public")));
+
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "hbs");
 app.set("views", path.join(__dirname, "views"));
@@ -154,5 +152,31 @@ const swaggerOptions = {
 
 const specs = swaggerJSDoc(swaggerOptions);
 app.use("/api-docs", SwaggerUi.serve, SwaggerUi.setup(specs));
+
+app.get("/set-cookie", (req, res) => {
+  res.cookie("coderCookie", "Esta es una cookie", { maxAge: 20000 });
+  res.send("<h1>Set Cookie!</h1>");
+});
+
+app.get("/get-cookie", (req, res) => {
+  res.send(`<h1>${JSON.stringify(req.cookies)}</h1>`);
+});
+
+app.get("/delete-cookie", (req, res) => {
+  res.clearCookie("coderCookie");
+  res.send("<h1>Delete Cookie!</h1>");
+});
+
+app.get("/set-signed-cookie", (req, res) => {
+  res.cookie("Signed Cookie", "Esta es una signedcookie", {
+    maxAge: 10000,
+    signed: true,
+  });
+  res.send("<h1>Signed Cookie!</h1>");
+});
+
+app.get("/get-signed-cookie", (req, res) => {
+  res.send(`<h1>${JSON.stringify(req.signedCookies)}</h1>`);
+});
 
 export default app;

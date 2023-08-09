@@ -7,7 +7,6 @@ import CommunsUtil from "../../utils/communs.js";
 const router = Router();
 
 router
-  //.get("/products", ProductsController.get)
   .get("/", async (req, res) => {
     const {
       query: { limit = 10, page = 1 },
