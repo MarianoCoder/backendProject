@@ -1,0 +1,17 @@
+{
+    "name": "Healthy Store",
+        "products": [
+          {
+            "id": 1,
+            "name": "Organic Chocolate",
+            "price": 30
+          },
+          {
+            "id": 2,
+            "name": "Maple Syrup",
+            "price": 100
+          }
+        ]
+      }
+
+      
