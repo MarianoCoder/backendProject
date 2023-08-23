@@ -5,6 +5,8 @@ import {
   validatePassword,
   tokenGenerator,
   isValidToken,
+  authMiddleware,
+  authentionMiddleware,
 } from "../../utils/index.js";
 import passport from "passport";
 import EmailService from "../../services/email.service.js";
@@ -25,6 +27,19 @@ router.post(
   passport.authenticate("register", { failureRedirect: "/register" }),
   (req, res) => {
     res.redirect("/login");
+  }
+);
+
+router.get(
+  "/private",
+  authMiddleware("jwt"),
+  authentionMiddleware("admin"),
+  (req, res) => {
+    res.json({
+      success: true,
+      message: "this is a private route",
+      user: req.user,
+    });
   }
 );
 

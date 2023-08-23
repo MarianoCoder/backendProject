@@ -15,7 +15,7 @@ Dentro del directorio se encuenta un archivo data.json con ejemplos para agregar
 
 # Hasta el momento las funcionalidades que incluye el proyecto son
 
-- Crear un usuario, modificar sus datos, eliminar un usuario, cambiar la contraseña, login y logout del usuario. 👤
+- Crear un usuario, modificar sus datos, eliminar un usuario, recuperar y modificar contraseña, login y logout del usuario. 👤
   Y también iniciar sesión a traves de github en http://localhost:3000/login
   Listar todos los usuarios en http://localhost:3000/api/users (solo postman)
 

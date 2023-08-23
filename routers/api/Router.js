@@ -1,5 +1,6 @@
 import { Router } from "express";
 import jwt from "passport-jwt";
+
 export default class CustomerRouter {
   constructor() {
     this.router = Router();
@@ -11,7 +12,7 @@ export default class CustomerRouter {
       path,
       this.handlePolicies(policies),
       this.generateCustomeResponse,
-      this.applayCallback(callbacks)
+      this.applyCallback(callbacks)
     );
   }
 
@@ -20,7 +21,7 @@ export default class CustomerRouter {
       path,
       this.handlePolicies(policies),
       this.generateCustomeResponse,
-      this.applayCallback(callbacks)
+      this.applyCallback(callbacks)
     );
   }
 
@@ -29,7 +30,7 @@ export default class CustomerRouter {
       path,
       this.handlePolicies(policies),
       this.generateCustomeResponse,
-      this.applayCallback(callbacks)
+      this.applyCallback(callbacks)
     );
   }
 
@@ -38,14 +39,14 @@ export default class CustomerRouter {
       path,
       this.handlePolicies(policies),
       this.generateCustomeResponse,
-      this.applayCallback(callbacks)
+      this.applyCallback(callbacks)
     );
   }
   getRouter() {
     return this.router;
   }
 
-  applayCallback(callbacks) {
+  applyCallback(callbacks) {
     return callbacks.map((cb) => async (...params) => {
       try {
         await cb.appy(this, params);
