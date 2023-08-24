@@ -3,6 +3,7 @@ import { uploader } from "../../utils.js";
 import ProductsController from "../../controllers/products.js";
 import ProductModel from "../../dao/models/product.js";
 import CommunsUtil from "../../utils/communs.js";
+import { authMiddleware, authentionMiddleware } from "../../utils/index.js";
 
 const router = Router();
 
@@ -18,9 +19,30 @@ router
     const result = await ProductModel.paginate({}, options);
     res.json(CommunsUtil.buidResponse(result));
   })
-  .get("/:id", ProductsController.getById)
-  .post("/", uploader.single("thumbnail"), ProductsController.create)
-  .put("/:id", ProductsController.updateById)
-  .delete("/:id", ProductsController.deleteById);
+  .get(
+    "/:id",
+    authMiddleware("jwt"),
+    authentionMiddleware("customer, admin, premium"),
+    ProductsController.getById
+  )
+  .post(
+    "/",
+    authMiddleware("jwt"),
+    authentionMiddleware("admin, premium"),
+    uploader.single("thumbnail"),
+    ProductsController.create
+  )
+  .put(
+    "/:id",
+    authMiddleware("jwt"),
+    authentionMiddleware("admin, premium"),
+    ProductsController.updateById
+  )
+  .delete(
+    "/:id",
+    authMiddleware("jwt"),
+    authentionMiddleware("admin, premium"),
+    ProductsController.deleteById
+  );
 
 export default router;

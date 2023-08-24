@@ -56,21 +56,29 @@ export const authMiddleware = (strategy) => (req, res, next) => {
       return next(error);
     }
     if (!user) {
-      return res
-        .status(401)
-        .json({
-          success: false,
-          message: info.message ? info.message : info.toString(),
-        });
+      return next(new Exception("Forbidden", 403));
     }
     req.user = user;
     next();
   })(req, res, next);
 };
 
-export const authentionMiddleware = (rol) => (req, res, next) => {
-  if (req.user.rol !== rol) {
+export const authentionMiddleware = (role) => async (req, res, next) => {
+  let token = null;
+  if (req && req.cookies) {
+    token = req.cookies.token;
+  }
+  if (!token) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+  const payload = await Utils.isValidToken(token);
+  if (!payload) {
+    return res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+  if (role !== payload.role) {
     return res.status(403).json({ success: false, message: "Forbidden" });
   }
+  req.user = payload;
+
   next();
 };
