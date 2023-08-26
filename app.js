@@ -111,7 +111,6 @@ initPassport();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//app.use("/", viewsRouter);
 app.use("/api", apiRouter);
 app.use("/", routers);
 app.use(addLogger);

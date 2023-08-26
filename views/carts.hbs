@@ -1,0 +1,31 @@
+<h1>Carts</h1>
+
+<table id="main" role="grid">
+    <tr>
+        <th>Nombre de Usuario</th>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th><a href="{{sortLink}}">Precio</a></th>
+        <th>Total</th>
+        <th>Estado</th>
+    </tr>
+
+    {{#each payload}}
+    <tr>
+        <td>{{user}}</td>
+        <td>{{product}}</td>
+        <td>{{price}}</td>
+        <td>{{total}}</td>
+        <td>{{status}}</td>
+    </tr>
+    {{/each}}
+
+</table>
+
+<p>Página actual: {{page}}</p>
+{{#if prevLink}}
+  <a href="{{prevLink}}" role="button">Anterior</a>
+{{/if}}
+{{#if nextLink}}
+  <a href="{{nextLink}}" role="button">Siguente</a>
+{{/if}}

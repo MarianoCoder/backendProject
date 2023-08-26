@@ -1,18 +1,18 @@
 import {
-  getOrders,
-  createOrder,
-  getOrderById,
-  updateOrderById,
-  deleteOrderById,
-} from "../dao/order.js";
+  getCarts,
+  createCart,
+  getCartById,
+  updateCartById,
+  deleteCartById,
+} from "../dao/cart.js";
 import { getUserById } from "../dao/user.js";
 import { NotFoundException } from "../utils/error.js";
 
 export const get = async (query = {}) => {
-  const orders = await getOrders(query);
+  const carts = await getCarts(query);
   return {
     status: "success",
-    payload: orders,
+    payload: carts,
   };
 };
 
@@ -26,37 +26,37 @@ export const create = async (body) => {
     return acc + product.price * product.quantity;
   }, 0);
 
-  const newOrder = {
+  const newCart = {
     user: user._id,
     products,
     total,
   };
 
-  const order = await createOrder(newOrder);
+  const cart = await createCart(newCart);
 
   return {
     status: "success",
-    payload: order,
+    payload: cart,
   };
 };
 
 export const getById = async (id) => {
-  const order = await getOrderById(id);
-  if (!order) {
-    throw new NotFoundException("Order not found");
+  const cart = await getCartById(id);
+  if (!cart) {
+    throw new NotFoundException("Cart not found");
   }
   return {
     status: "success",
-    payload: order,
+    payload: cart,
   };
 };
 
 export const updateById = async (id, body) => {
-  const order = await getOrderById(id);
-  if (!order) {
-    throw new NotFoundException("Order not found");
+  const cart = await getCartById(id);
+  if (!cart) {
+    throw new NotFoundException("Cart not found");
   }
-  const result = await updateOrderById(id, body);
+  const result = await updateCartById(id, body);
   return {
     status: "success",
     payload: result,
@@ -64,11 +64,11 @@ export const updateById = async (id, body) => {
 };
 
 export const removeById = async (id) => {
-  const order = await getOrderById(id);
-  if (!order) {
-    throw new NotFoundException("Order not found");
+  const cart = await getCartById(id);
+  if (!cart) {
+    throw new NotFoundException("Cart not found");
   }
-  const result = await deleteOrderById(id);
+  const result = await deleteCartById(id);
   return {
     status: "success",
     payload: result,
@@ -76,31 +76,31 @@ export const removeById = async (id) => {
 };
 
 export const addProduct = async (id, body) => {
-  const order = await getOrderById(id);
-  if (!order) {
-    throw new NotFoundException("Order not found");
+  const cart = await getCartById(id);
+  if (!cart) {
+    throw new NotFoundException("Cart not found");
   }
   const { products } = body;
-  order.products = products;
-  await updateOrderById(id, order);
+  cart.products = products;
+  await updateCartById(id, cart);
   return {
     status: "success",
-    payload: order,
+    payload: cart,
   };
 };
 
 export const resolve = async (id, body) => {
-  const order = await getOrderById(id);
-  if (!order) {
-    throw new NotFoundException("order not found");
+  const cart = await getCartById(id);
+  if (!cart) {
+    throw new NotFoundException("Cart not found");
   }
 
   const { status } = body;
-  order.status = status;
-  await updateOrderById(id, order);
+  cart.status = status;
+  await updateCartById(id, cart);
 
   return {
     status: "success",
-    payload: order,
+    payload: cart,
   };
 };
